@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="vendor/twitter/bootstrap/dist/css/bootstrap.min.css">
+    <script src="jquery.min.js"></script>
+    <script src="handlebars-v3.0.3.js"></script>
+    <script src="vendor/twitter/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div id="DocumentResults"></div>
+            <script id="document-template" type="text/x-handlebars-template">
+                <div>
+                    {{#each this}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>{{Category}}</h2>
+                            {{#DocumentList}}
+                            <p>{{DocumentName}} at {{DocumentLocation}}</p>
+                            {{/DocumentList}}
+                        </div>
+                    </div>
+                    {{/each}}
+
+                    <p>There are no documents available at this time</p>
+
+                </div>
+            </script>
+
+            <!-- this is a simple nav bar for selecting between images -->
+            <ul class="nav nav-tabs">
+                <li id="show">
+                    <a href="#">Show</a>
+                </li>
+            </ul>
+            <br/><br/>
+            <!-- the content of the web page starts off empty
+ because we will fill it later from the template -->
+            <div id="content">
+            </div>
+
+            <!-- this is our template
+              it displays an image with a title and author headings
+              the bits in curly brackets {{}} are template expressions -->
+
+            <script id="show-template" type="text/x-handlebars-template">
+                {{#each this}}
+                <div class="row">
+                    <h3>{{firstName}} {{lastName}}</h3>
+                </div>
+                {{/each}}
+
+            </script>
+
+        </div>
+    </div>
+</div>
+
+<!-- javascript code to fill the template -->
+<script type="text/javascript">
+
+    var data1 = {
+        people: [
+            {firstName: "Yehuda", lastName: "Katz"},
+            {firstName: "Carl", lastName: "Lerche"},
+            {firstName: "Alan", lastName: "Johnson"}
+        ]
+    };
+
+    $(function() {
+        var source = $("#show-template").html();
+        var template = Handlebars.compile(source);
+
+
+        $("#show").click(function(){
+            var html = template(data1.people);
+            $('#content').html(html);
+        });
+
+
+    });
+</script>
+
+
+<script>
+    $(function() {
+        var source = $("#document-template").html();
+        var template = Handlebars.compile(source);
+        var html = template(data);
+        $('#DocumentResults').html(html);
+    });
+
+
+
+    var data = [
+        {
+            Category: "General",
+            DocumentList: [
+                {
+                    DocumentName: "Document Name 1 - General",
+                    DocumentLocation: "Document Location 1 - General"
+                },
+                {
+                    DocumentName: "Document Name 2 - General",
+                    DocumentLocation: "Document Location 2 - General"
+                }
+            ]
+        },
+        {
+            Category: "Unit Documents",
+            DocumentList: [
+                {
+                    DocumentName: "Document Name 1 - Unit Documents",
+                    DocumentList: "Document Location 1 - Unit Documents"
+                }
+            ]
+        },
+        {
+            Category: "Minutes"
+        }
+    ];
+</script>
+
+</body>
+</html>

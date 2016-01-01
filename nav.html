@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="vendor/twitter/bootstrap/dist/css/bootstrap.min.css">
+    <script src="jquery.min.js"></script>
+    <script src="handlebars-v3.0.3.js"></script>
+    <script src="vendor/twitter/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- this is a simple nav bar for selecting between images -->
+            <ul class="nav nav-tabs">
+                <li id="image1btn">
+                    <a href="#">Image 1</a>
+                </li>
+                <li id="image2btn">
+                    <a href="#">Image 2</a>
+                </li>
+                <li id="show">
+                    <a href="#">Show</a>
+                </li>
+            </ul>
+            <br/><br/>
+            <!-- the content of the web page starts off empty
+ because we will fill it later from the template -->
+            <div id="content">
+            </div>
+
+            <!-- this is our template
+              it displays an image with a title and author headings
+              the bits in curly brackets {{}} are template expressions -->
+            <script id="image-template" type="text/x-handlebars-template">
+                <div class="title">
+                    <h1>{{title}}</h1>
+                    <h3 class="author">
+                        {{author}}
+                    </h3>
+                    <img  style="height:600px" src="{{src}}"/>
+                </div>
+            </script>
+
+            <script id="show-template" type="text/x-handlebars-template">
+                <h1>Name: {{firstName}}</h1>
+            </script>
+
+        </div>
+    </div>
+</div>
+
+<!-- javascript code to fill the template -->
+<script type="text/javascript">
+
+    // grab our template code from the DOM
+    var source   = $("#image-template").html();
+    //        alert(source);
+
+    // compile the template so we can use it
+    var detail_template = Handlebars.compile(source);
+    //        alert(template);
+
+    var html_temp = $("#show-template").html();
+
+    var show_template = Handlebars.compile(html_temp);
+
+    // create some data
+    // have two objects each representing a different image
+    var data1 = {
+        src: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/600px-The_Earth_seen_from_Apollo_17.jpg",
+        title:"The Earth seen from Apollo 17",
+        author:"Ed g2s"
+    };
+
+    var data2 = {
+        src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Shopping_Center_Magna_Plaza_Amsterdam_2014.jpg/600px-Shopping_Center_Magna_Plaza_Amsterdam_2014.jpg",
+        title: "Shopping Center Magna Plaza Amsterdam 2014",
+        author: "Tuxyso"
+    };
+
+    var data3 = {"employees":[
+        {"firstName":"John", "lastName":"Doe"},
+        {"firstName":"Anna", "lastName":"Smith"},
+        {"firstName":"Peter", "lastName":"Jones"}
+    ]};
+
+        $("#image1btn").click(function(){
+            var html    = detail_template(data1);
+            $('#content').html(html);
+        });
+
+    $("#image2btn").click(function(){
+        var html    = detail_template(data2);
+        $('#content').html(html);
+    });
+
+    $('#show').click(function(){
+        var html    = show_template(data3.employees);
+        console.log(html);
+        $('#content').html(html);
+    });
+
+</script>
+</body>
+</html>
